@@ -1,90 +1,75 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl" class="light">
+<html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>فروشگاه های پذیرنده کارت رفاهی</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class'
-    };
-  </script>
 </head>
-<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-100 px-4 py-6 text-sm sm:text-base transition-colors duration-300">
+<body class="bg-gray-100 text-gray-800 px-4 py-6 transition-colors duration-300">
 
-  <div class="max-w-6xl mx-auto">
-    <div class="flex justify-center mb-6">
-      <h1 class="text-2xl font-bold text-blue-700 dark:text-blue-400">فروشگاه های پذیرنده کارت رفاهی در استان بوشهر</h1>
-    </div>
-      <button onclick="toggleDarkMode()" class="border border-gray-400 dark:border-gray-600 px-3 py-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition">
-        تغییر حالت
-      </button>
-    </div>
-
-    <!-- جستجو -->
-    <div class="flex flex-col sm:flex-row gap-4 mb-6">
-      <input id="searchCity" onkeyup="filterTable()" type="text"
-        class="flex-1 border border-gray-300 dark:border-gray-600 rounded-md px-4 py-2 bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        placeholder="جستجو بر اساس شهر" />
-      
-      <input id="searchCategory" onkeyup="filterTable()" type="text"
-        class="flex-1 border border-gray-300 dark:border-gray-600 rounded-md px-4 py-2 bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        placeholder="جستجو بر اساس صنف" />
-
-      <input id="searchStore" onkeyup="filterTable()" type="text"
-        class="flex-1 border border-gray-300 dark:border-gray-600 rounded-md px-4 py-2 bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        placeholder="جستجو بر اساس نام فروشگاه" />
-    </div>
-
-    <!-- جدول -->
-    <div class="overflow-x-auto bg-white dark:bg-gray-800 rounded-xl shadow">
-      <table class="min-w-full table-auto text-center">
-        <thead class="bg-blue-600 text-white dark:bg-blue-700">
-          <tr>
-            <th class="px-4 py-3 min-w-[100px]">شهر</th>
-            <th class="px-4 py-3 min-w-[120px]">صنف</th>
-            <th class="px-4 py-3 min-w-[140px]">نام فروشگاه</th>
-            <th class="px-4 py-3 min-w-[200px]">آدرس</th>
-            <th class="px-4 py-3 min-w-[140px]">شماره تماس</th>
-          </tr>
-        </thead>
-        <tbody id="storeTable" class="divide-y divide-gray-200 dark:divide-gray-700">
-          <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
-            <td class="px-4 py-3">بوشهر</td>
-            <td class="px-4 py-3">الکترونیک</td>
-            <td class="px-4 py-3">فروشگاه تکنوپارک</td>
-            <td class="px-4 py-3">خیابان شهید عاشوری، پلاک ۱۰</td>
-            <td class="px-4 py-3"><a href="tel:07733334444" class="text-blue-600 dark:text-blue-400 hover:underline">077-33334444</a></td>
-          </tr>
-          <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
-            <td class="px-4 py-3">تهران</td>
-            <td class="px-4 py-3">کامپیوتر</td>
-            <td class="px-4 py-3">دیجیتال مارکت</td>
-            <td class="px-4 py-3">بلوار کشاورز، پلاک ۱۲۳</td>
-            <td class="px-4 py-3"><a href="tel:02188990011" class="text-blue-600 dark:text-blue-400 hover:underline">021-88990011</a></td>
-          </tr>
-          <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
-            <td class="px-4 py-3">شیراز</td>
-            <td class="px-4 py-3">لوازم خانگی</td>
-            <td class="px-4 py-3">پارس کالا</td>
-            <td class="px-4 py-3">خیابان زند، مرکز تجاری ستاره</td>
-            <td class="px-4 py-3"><a href="tel:07132223344" class="text-blue-600 dark:text-blue-400 hover:underline">071-32223344</a></td>
-          </tr>
-          <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
-            <td class="px-4 py-3">بوشهر</td>
-            <td class="px-4 py-3">موبایل</td>
-            <td class="px-4 py-3">موبایل مرکزی</td>
-            <td class="px-4 py-3">چهارراه شهدا، پاساژ الماس</td>
-            <td class="px-4 py-3"><a href="tel:07733335555" class="text-blue-600 dark:text-blue-400 hover:underline">077-33335555</a></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+  <!-- عنوان -->
+  <div class="flex justify-center mb-6">
+    <h1 class="text-1xl font-bold text-blue-700">فروشگاه های پذیرنده کارت رفاهی در استان بوشهر</h1>
   </div>
 
-  <!-- اسکریپت‌ها -->
+  <!-- جستجو -->
+  <div class="max-w-6xl mx-auto mb-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
+    <input id="searchCity" onkeyup="filterTable()" type="text"
+      class="w-full border rounded-md px-4 py-2" placeholder="جستجو بر اساس شهر" />
+
+    <input id="searchCategory" onkeyup="filterTable()" type="text"
+      class="w-full border rounded-md px-4 py-2" placeholder="جستجو بر اساس صنف" />
+
+    <input id="searchStore" onkeyup="filterTable()" type="text"
+      class="w-full border rounded-md px-4 py-2" placeholder="جستجو بر اساس نام فروشگاه" />
+  </div>
+
+  <!-- جدول -->
+  <div class="max-w-6xl mx-auto overflow-x-auto bg-white rounded-xl shadow">
+    <table class="min-w-full table-auto text-right">
+      <thead class="bg-blue-600 text-white">
+        <tr>
+          <th class="px-4 py-3">شهر</th>
+          <th class="px-4 py-3">صنف</th>
+          <th class="px-4 py-3">نام فروشگاه</th>
+          <th class="px-4 py-3">آدرس</th>
+          <th class="px-4 py-3">شماره تماس</th>
+        </tr>
+      </thead>
+      <tbody id="storeTable" class="divide-y divide-gray-200">
+        <!-- داده‌ها از CSV بارگذاری می‌شود -->
+      </tbody>
+    </table>
+  </div>
+
   <script>
+    // خواندن فایل CSV
+    fetch("data.csv")
+      .then(response => response.text())
+      .then(data => {
+        const rows = data.trim().split("\n").slice(1); // حذف خط اول (هدر)
+        const tbody = document.getElementById("storeTable");
+
+        rows.forEach(row => {
+          const [city, category, store, address, phone] = row.split(",");
+
+          const tr = document.createElement("tr");
+          tr.className = "hover:bg-gray-50";
+
+          tr.innerHTML = `
+            <td class="px-4 py-3">${city}</td>
+            <td class="px-4 py-3">${category}</td>
+            <td class="px-4 py-3">${store}</td>
+            <td class="px-4 py-3">${address}</td>
+            <td class="px-4 py-3"><a href="tel:${phone}" class="text-blue-600 hover:underline">${phone}</a></td>
+          `;
+
+          tbody.appendChild(tr);
+        });
+      });
+
+    // فیلتر کردن داده‌ها
     function filterTable() {
       const city = document.getElementById("searchCity").value.toUpperCase();
       const store = document.getElementById("searchStore").value.toUpperCase();
@@ -92,22 +77,14 @@
       const rows = document.getElementById("storeTable").getElementsByTagName("tr");
 
       for (let i = 0; i < rows.length; i++) {
-        const cityCell = rows[i].getElementsByTagName("td")[0];
-        const categoryCell = rows[i].getElementsByTagName("td")[1];
-        const storeCell = rows[i].getElementsByTagName("td")[2];
-
-        const matchesCity = cityCell && cityCell.textContent.toUpperCase().includes(city);
-        const matchesStore = storeCell && storeCell.textContent.toUpperCase().includes(store);
-        const matchesCategory = categoryCell && categoryCell.textContent.toUpperCase().includes(category);
+        const tds = rows[i].getElementsByTagName("td");
+        const matchesCity = tds[0].textContent.toUpperCase().includes(city);
+        const matchesCategory = tds[1].textContent.toUpperCase().includes(category);
+        const matchesStore = tds[2].textContent.toUpperCase().includes(store);
 
         rows[i].style.display = (matchesCity && matchesStore && matchesCategory) ? "" : "none";
       }
     }
-
-    function toggleDarkMode() {
-      document.documentElement.classList.toggle("dark");
-    }
   </script>
-
 </body>
 </html>
