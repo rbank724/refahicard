@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لیست فروشگاه‌ها</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 px-4 py-6 text-sm sm:text-base">
+
+  <div class="max-w-6xl mx-auto">
+    <h1 class="text-2xl font-bold mb-6 text-center text-blue-700">لیست فروشگاه‌ها</h1>
+
+    <!-- بخش جستجو -->
+    <div class="flex flex-col sm:flex-row gap-4 mb-6">
+      <input id="searchCity" onkeyup="filterTable()" type="text"
+        class="flex-1 border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        placeholder="جستجو بر اساس شهر" />
+      
+      <input id="searchCategory" onkeyup="filterTable()" type="text"
+        class="flex-1 border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        placeholder="جستجو بر اساس صنف" />
+
+      <input id="searchStore" onkeyup="filterTable()" type="text"
+        class="flex-1 border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        placeholder="جستجو بر اساس نام فروشگاه" />
+    </div>
+
+    <!-- جدول فروشگاه‌ها -->
+    <div class="overflow-x-auto bg-white rounded-xl shadow">
+      <table class="min-w-full table-auto text-center">
+        <thead class="bg-blue-600 text-white">
+          <tr>
+            <th class="px-4 py-3 min-w-[100px]">شهر</th>
+            <th class="px-4 py-3 min-w-[140px]">نام فروشگاه</th>
+            <th class="px-4 py-3 min-w-[120px]">صنف</th>
+            <th class="px-4 py-3 min-w-[200px]">آدرس</th>
+            <th class="px-4 py-3 min-w-[140px]">شماره تماس</th>
+          </tr>
+        </thead>
+        <tbody id="storeTable" class="divide-y divide-gray-100">
+          <tr class="hover:bg-gray-50">
+            <td class="px-4 py-3">بوشهر</td>
+            <td class="px-4 py-3">فروشگاه تکنوپارک</td>
+            <td class="px-4 py-3">الکترونیک</td>
+            <td class="px-4 py-3">خیابان شهید عاشوری، پلاک ۱۰</td>
+            <td class="px-4 py-3">
+              <a href="tel:07733334444" class="text-blue-600 hover:underline">077-33334444</a>
+            </td>
+          </tr>
+          <tr class="hover:bg-gray-50">
+            <td class="px-4 py-3">تهران</td>
+            <td class="px-4 py-3">دیجیتال مارکت</td>
+            <td class="px-4 py-3">کامپیوتر</td>
+            <td class="px-4 py-3">بلوار کشاورز، پلاک ۱۲۳</td>
+            <td class="px-4 py-3">
+              <a href="tel:02188990011" class="text-blue-600 hover:underline">021-88990011</a>
+            </td>
+          </tr>
+          <tr class="hover:bg-gray-50">
+            <td class="px-4 py-3">شیراز</td>
+            <td class="px-4 py-3">پارس کالا</td>
+            <td class="px-4 py-3">لوازم خانگی</td>
+            <td class="px-4 py-3">خیابان زند، مرکز تجاری ستاره</td>
+            <td class="px-4 py-3">
+              <a href="tel:07132223344" class="text-blue-600 hover:underline">071-32223344</a>
+            </td>
+          </tr>
+          <tr class="hover:bg-gray-50">
+            <td class="px-4 py-3">بوشهر</td>
+            <td class="px-4 py-3">موبایل مرکزی</td>
+            <td class="px-4 py-3">موبایل</td>
+            <td class="px-4 py-3">چهارراه شهدا، پاساژ الماس</td>
+            <td class="px-4 py-3">
+              <a href="tel:07733335555" class="text-blue-600 hover:underline">077-33335555</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- اسکریپت فیلتر -->
+  <script>
+    function filterTable() {
+      const city = document.getElementById("searchCity").value.toUpperCase();
+      const category = document.getElementById("searchCategory").value.toUpperCase();
+      const store = document.getElementById("searchStore").value.toUpperCase();
+      const rows = document.getElementById("storeTable").getElementsByTagName("tr");
+
+      for (let i = 0; i < rows.length; i++) {
+        const cityCell = rows[i].getElementsByTagName("td")[0];
+        const storeCell = rows[i].getElementsByTagName("td")[1];
+        const categoryCell = rows[i].getElementsByTagName("td")[2];
+
+        const matchesCity = cityCell && cityCell.textContent.toUpperCase().includes(city);
+        const matchesStore = storeCell && storeCell.textContent.toUpperCase().includes(store);
+        const matchesCategory = categoryCell && categoryCell.textContent.toUpperCase().includes(category);
+
+        rows[i].style.display = (matchesCity && matchesStore && matchesCategory) ? "" : "none";
+      }
+    }
+  </script>
+</body>
+</html>
