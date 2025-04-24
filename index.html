@@ -5,12 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>فروشگاه های پذیرنده کارت رفاهی</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 </head>
 <body class="bg-gray-100 text-gray-800 px-4 py-6 transition-colors duration-300">
 
   <!-- عنوان -->
   <div class="flex justify-center mb-6">
-    <h1 class="text-1xl font-bold text-blue-700">فروشگاه های پذیرنده کارت رفاهی در استان بوشهر</h1>
+    <h1 class="text-1xl font-bold text-blue-700">فروشگاه های پذیرنده کارت رفاهی</h1>
   </div>
 
   <!-- جستجو -->
@@ -47,25 +48,29 @@
     // خواندن فایل CSV
     fetch("data.csv")
       .then(response => response.text())
-      .then(data => {
-        const rows = data.trim().split("\n").slice(1); // حذف خط اول (هدر)
-        const tbody = document.getElementById("storeTable");
+      .then(csv => {
+        Papa.parse(csv, {
+          header: true, // استفاده از اولین ردیف به عنوان هدر
+          complete: function(results) {
+            const tbody = document.getElementById("storeTable");
 
-        rows.forEach(row => {
-          const [city, category, store, address, phone] = row.split(",");
+            results.data.forEach(row => {
+              if (!row["شهر"]) return; // رد کردن ردیف‌های خالی
 
-          const tr = document.createElement("tr");
-          tr.className = "hover:bg-gray-50";
+              const tr = document.createElement("tr");
+              tr.className = "hover:bg-gray-50";
 
-          tr.innerHTML = `
-            <td class="px-4 py-3">${city}</td>
-            <td class="px-4 py-3">${category}</td>
-            <td class="px-4 py-3">${store}</td>
-            <td class="px-4 py-3">${address}</td>
-            <td class="px-4 py-3"><a href="tel:${phone}" class="text-blue-600 hover:underline">${phone}</a></td>
-          `;
+              tr.innerHTML = `
+                <td class="px-4 py-3">${row["شهر"]}</td>
+                <td class="px-4 py-3">${row["صنف"]}</td>
+                <td class="px-4 py-3">${row["نام فروشگاه"]}</td>
+                <td class="px-4 py-3">${row["آدرس"]}</td>
+                <td class="px-4 py-3"><a href="tel:${row["شماره تماس"]}" class="text-blue-600 hover:underline">${row["شماره تماس"]}</a></td>
+              `;
 
-          tbody.appendChild(tr);
+              tbody.appendChild(tr);
+            });
+          }
         });
       });
 
