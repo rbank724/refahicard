@@ -7,23 +7,37 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 </head>
-<body class="bg-gray-100 text-gray-800 px-4 py-6 transition-colors duration-300">
+<body class="bg-gray-100 text-gray-800 px-4 py-6">
 
   <!-- عنوان -->
   <div class="flex justify-center mb-6">
     <h1 class="text-1xl font-bold text-blue-700">فروشگاه های پذیرنده کارت رفاهی در استان بوشهر</h1>
   </div>
 
-  <!-- جستجو -->
-  <div class="max-w-6xl mx-auto mb-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
+  <!-- باکس‌های جستجو -->
+  <div class="max-w-6xl mx-auto mb-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
     <input id="searchCity" onkeyup="filterTable()" type="text"
-      class="w-full border rounded-md px-4 py-2" placeholder="جستجو بر اساس شهر" />
-
+      class="border rounded-md px-4 py-2 w-full" placeholder="جستجو بر اساس شهر" />
     <input id="searchCategory" onkeyup="filterTable()" type="text"
-      class="w-full border rounded-md px-4 py-2" placeholder="جستجو بر اساس صنف" />
-
+      class="border rounded-md px-4 py-2 w-full" placeholder="جستجو بر اساس صنف" />
     <input id="searchStore" onkeyup="filterTable()" type="text"
-      class="w-full border rounded-md px-4 py-2" placeholder="جستجو بر اساس نام فروشگاه" />
+      class="border rounded-md px-4 py-2 w-full" placeholder="جستجو بر اساس نام فروشگاه" />
+  </div>
+
+  <!-- دکمه‌ها -->
+  <div class="max-w-6xl mx-auto mb-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
+    <button onclick="showVideoModal()"
+      class="bg-green-600 hover:bg-green-700 text-white text-sm font-medium px-4 py-2 rounded shadow w-full">
+      معرفی کارت رفاهی
+    </button>
+    <button onclick="showMessageModal('مهلت استفاده از اعتبار، از تاریخ صدور تا آخرین روز ماه بعد و مدت بازپرداخت اقساط ١٢ ماه در اقساط مساوی و ماهیانه است.')"
+      class="bg-green-600 hover:bg-green-700 text-white text-sm font-medium px-4 py-2 rounded shadow w-full">
+      مهلت استفاده و مدت بازپرداخت
+    </button>
+    <button onclick="showMessageModal('3% مبلغ خرید که در اقساط مساوی همزمان با وصول اقساط دریافت می‌شود.')"
+      class="bg-green-600 hover:bg-green-700 text-white text-sm font-medium px-4 py-2 rounded shadow w-full">
+      نرخ کارمزد
+    </button>
   </div>
 
   <!-- جدول -->
@@ -39,23 +53,30 @@
         </tr>
       </thead>
       <tbody id="storeTable" class="divide-y divide-gray-200">
-        <!-- داده‌ها از CSV بارگذاری می‌شود -->
+        <!-- ردیف‌ها از فایل CSV لود می‌شوند -->
       </tbody>
     </table>
   </div>
 
+  <!-- Modal -->
+  <div id="modal" class="fixed inset-0 hidden items-center justify-center bg-black bg-opacity-50 z-50">
+    <div class="bg-white rounded-lg shadow-lg max-w-2xl w-full p-4 relative">
+      <button onclick="closeModal()" class="absolute top-2 left-2 text-gray-500 hover:text-red-500 text-lg">✕</button>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <!-- اسکریپت‌ها -->
   <script>
-    // خواندن فایل CSV
     fetch("data.csv")
       .then(response => response.text())
       .then(csv => {
         Papa.parse(csv, {
-          header: true, // استفاده از اولین ردیف به عنوان هدر
+          header: true,
           complete: function(results) {
             const tbody = document.getElementById("storeTable");
-
             results.data.forEach(row => {
-              if (!row["شهر"]) return; // رد کردن ردیف‌های خالی
+              if (!row["شهر"]) return;
 
               const tr = document.createElement("tr");
               tr.className = "hover:bg-gray-50";
@@ -67,14 +88,12 @@
                 <td class="px-4 py-3">${row["آدرس"]}</td>
                 <td class="px-4 py-3"><a href="tel:${row["شماره تماس"]}" class="text-blue-600 hover:underline">${row["شماره تماس"]}</a></td>
               `;
-
               tbody.appendChild(tr);
             });
           }
         });
       });
 
-    // فیلتر کردن داده‌ها
     function filterTable() {
       const city = document.getElementById("searchCity").value.toUpperCase();
       const store = document.getElementById("searchStore").value.toUpperCase();
@@ -90,6 +109,37 @@
         rows[i].style.display = (matchesCity && matchesStore && matchesCategory) ? "" : "none";
       }
     }
+
+    function showVideoModal() {
+      const modal = document.getElementById("modal");
+      const content = document.getElementById("modalContent");
+      content.innerHTML = `
+        <div class="relative w-full" style="padding-bottom: 56.25%;">
+          <iframe class="absolute top-0 left-0 w-full h-full rounded-lg"
+            src="https://www.aparat.com/video/video/embed/videohash/blep93a/vt/frame"
+            allowfullscreen frameborder="0"></iframe>
+        </div>
+      `;
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+    }
+
+    function showMessageModal(message) {
+      const modal = document.getElementById("modal");
+      const content = document.getElementById("modalContent");
+      content.innerHTML = `<p class="text-gray-800 text-center text-lg py-6">${message}</p>`;
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+    }
+
+    function closeModal() {
+      const modal = document.getElementById("modal");
+      const content = document.getElementById("modalContent");
+      content.innerHTML = ""; // حذف iframe برای توقف کامل ویدیو
+      modal.classList.remove("flex");
+      modal.classList.add("hidden");
+    }
   </script>
+
 </body>
 </html>
