@@ -3,41 +3,63 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>فروشگاه های پذیرنده کارت رفاهی</title>
+  <title>کارت رفاهی متصل به اوراق گام</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <style>
+    .fade-enter { opacity: 0; transform: scale(0.95); transition: all 0.3s ease; }
+    .fade-enter-active { opacity: 1; transform: scale(1); }
+    .fade-exit { opacity: 1; transform: scale(1); transition: all 0.3s ease; }
+    .fade-exit-active { opacity: 0; transform: scale(0.95); }
+    #modal::before { content: ""; position: absolute; inset: 0; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: -1; }
+    .fancy-button { transition: all 0.3s ease; }
+    .fancy-button:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 10px 15px rgba(0,0,0,0.15); }
+  </style>
 </head>
 <body class="bg-gray-100 text-gray-800 px-4 py-6">
 
   <!-- عنوان -->
-  <div class="flex justify-center mb-6">
-    <h1 class="text-1xl font-bold text-blue-700">فروشگاه های پذیرنده کارت رفاهی در استان بوشهر</h1>
+  <div class="max-w-6xl mx-auto mb-5 text-center">
+    <h1 class="text-1xl font-bold text-blue-700">کارت رفاهی (دریافت اعتبار خرید کالا تا ۳ میلیارد ریال بدون نیاز به ایجاد میانگین حساب)</h1>
+  </div>
+
+  <!-- دکمه معرفی کارت رفاهی -->
+  <div class="max-w-6xl mx-auto mb-4 flex justify-center">
+    <button onclick="showVideoModal()"
+      class="bg-purple-600 hover:bg-purple-700 text-white text-sm font-medium px-4 py-2 rounded shadow fancy-button w-full sm:w-full md:w-1/3">
+      آشنایی با کارت رفاهی بانک رفاه کارگران
+    </button>
   </div>
 
   <!-- باکس‌های جستجو -->
-  <div class="max-w-6xl mx-auto mb-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
+  <div class="max-w-6xl mx-auto mb-4 grid grid-cols-1 sm:grid-cols-3 gap-3">
     <input id="searchCity" onkeyup="filterTable()" type="text"
-      class="border rounded-md px-4 py-2 w-full" placeholder="جستجو بر اساس شهر" />
+      class="border rounded-md px-4 py-2 w-full" placeholder="جستجو بر اساس نام شهر" />
     <input id="searchCategory" onkeyup="filterTable()" type="text"
-      class="border rounded-md px-4 py-2 w-full" placeholder="جستجو بر اساس صنف" />
+      class="border rounded-md px-4 py-2 w-full" placeholder="جستجو بر اساس نام صنف" />
     <input id="searchStore" onkeyup="filterTable()" type="text"
       class="border rounded-md px-4 py-2 w-full" placeholder="جستجو بر اساس نام فروشگاه" />
   </div>
 
-  <!-- دکمه‌ها -->
-  <div class="max-w-6xl mx-auto mb-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
-    <button onclick="showVideoModal()"
-      class="bg-green-600 hover:bg-green-700 text-white text-sm font-medium px-4 py-2 rounded shadow w-full">
-      معرفی کارت رفاهی
-    </button>
+  <!-- دکمه‌های دیگر -->
+  <div class="max-w-6xl mx-auto mb-6 grid grid-cols-1 sm:grid-cols-3 gap-3">
+    <button onclick="showBenefitsModal()"
+      class="bg-green-600 hover:bg-green-700 text-white text-sm font-medium px-4 py-2 rounded shadow fancy-button w-full">
+      مزایای کارت رفاهی برای صاحبان کارت و پذیرندگان
+    </button>    
     <button onclick="showMessageModal('مهلت استفاده از اعتبار، از تاریخ صدور تا آخرین روز ماه بعد و مدت بازپرداخت اقساط ١٢ ماه در اقساط مساوی و ماهیانه است.')"
-      class="bg-green-600 hover:bg-green-700 text-white text-sm font-medium px-4 py-2 rounded shadow w-full">
+      class="bg-green-600 hover:bg-green-700 text-white text-sm font-medium px-4 py-2 rounded shadow fancy-button w-full">
       مهلت استفاده و مدت بازپرداخت
     </button>
-    <button onclick="showMessageModal('3% مبلغ خرید که در اقساط مساوی همزمان با وصول اقساط دریافت می‌شود.')"
-      class="bg-green-600 hover:bg-green-700 text-white text-sm font-medium px-4 py-2 rounded shadow w-full">
-      نرخ کارمزد
+    <button onclick="showMessageModal('٪۲.۲۵ از میزان خرید به عنوان کارمزد صدور اوراق گام که در ابتدای دوره دریافت می شود و همچنین ۳٪ کارمزد اقساط تسهیلات که با هر قسط کسر می گردد.')"
+      class="bg-green-600 hover:bg-green-700 text-white text-sm font-medium px-4 py-2 rounded shadow fancy-button w-full">
+       نرخ کارمزد برای صاحبان کارت
     </button>
+  </div>
+
+  <!-- متن کارت رفاهی -->
+  <div class="max-w-6xl mx-auto mb-3 text-center">
+    <p class="text-1xl font-bold text-blue-700">فروشگاه های پذیرنده کارت رفاهی در استان بوشهر</p>
   </div>
 
   <!-- جدول -->
@@ -47,52 +69,88 @@
         <tr>
           <th class="px-4 py-3">شهر</th>
           <th class="px-4 py-3">صنف</th>
-          <th class="px-4 py-3">نام فروشگاه</th>
+          <th class="px-4 py-3">فروشگاه</th>
           <th class="px-4 py-3">آدرس</th>
           <th class="px-4 py-3">شماره تماس</th>
         </tr>
       </thead>
       <tbody id="storeTable" class="divide-y divide-gray-200">
-        <!-- ردیف‌ها از فایل CSV لود می‌شوند -->
+        <!-- ردیف‌ها لود می‌شوند -->
       </tbody>
     </table>
   </div>
 
+  <!-- دکمه‌های صفحه بندی -->
+  <div id="pagination" class="flex justify-center items-center mt-4 space-x-2 rtl:space-x-reverse"></div>
+
   <!-- Modal -->
   <div id="modal" class="fixed inset-0 hidden items-center justify-center bg-black bg-opacity-50 z-50">
-    <div class="bg-white rounded-lg shadow-lg max-w-2xl w-full p-4 relative">
+    <div id="modalBox" class="bg-white rounded-lg shadow-lg max-w-2xl w-full p-4 relative">
       <button onclick="closeModal()" class="absolute top-2 left-2 text-gray-500 hover:text-red-500 text-lg">✕</button>
       <div id="modalContent"></div>
     </div>
   </div>
 
-  <!-- اسکریپت‌ها -->
+  <!-- اسکریپت -->
   <script>
+    let allRows = [];
+    let currentPage = 1;
+    const rowsPerPage = 5;
+
     fetch("data.csv")
       .then(response => response.text())
       .then(csv => {
         Papa.parse(csv, {
           header: true,
           complete: function(results) {
-            const tbody = document.getElementById("storeTable");
-            results.data.forEach(row => {
-              if (!row["شهر"]) return;
-
-              const tr = document.createElement("tr");
-              tr.className = "hover:bg-gray-50";
-
-              tr.innerHTML = `
-                <td class="px-4 py-3">${row["شهر"]}</td>
-                <td class="px-4 py-3">${row["صنف"]}</td>
-                <td class="px-4 py-3">${row["نام فروشگاه"]}</td>
-                <td class="px-4 py-3">${row["آدرس"]}</td>
-                <td class="px-4 py-3"><a href="tel:${row["شماره تماس"]}" class="text-blue-600 hover:underline">${row["شماره تماس"]}</a></td>
-              `;
-              tbody.appendChild(tr);
-            });
+            allRows = results.data.filter(row => row["شهر"]);
+            renderTable();
+            renderPagination();
           }
         });
       });
+
+    function renderTable() {
+      const tbody = document.getElementById("storeTable");
+      tbody.innerHTML = "";
+
+      const start = (currentPage - 1) * rowsPerPage;
+      const paginatedRows = allRows.slice(start, start + rowsPerPage);
+
+      paginatedRows.forEach(row => {
+        const tr = document.createElement("tr");
+        tr.className = "hover:bg-gray-50";
+        tr.innerHTML = `
+          <td class="px-4 py-3">${row["شهر"]}</td>
+          <td class="px-4 py-3">${row["صنف"]}</td>
+          <td class="px-4 py-3">${row["نام فروشگاه"]}</td>
+          <td class="px-4 py-3">${row["آدرس"]}</td>
+          <td class="px-4 py-3"><a href="tel:${row["شماره تماس"]}" class="text-blue-600 hover:underline">${row["شماره تماس"]}</a></td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      filterTable();
+    }
+
+    function renderPagination() {
+      const pagination = document.getElementById("pagination");
+      pagination.innerHTML = "";
+
+      const pageCount = Math.ceil(allRows.length / rowsPerPage);
+
+      for (let i = 1; i <= pageCount; i++) {
+        const btn = document.createElement("button");
+        btn.className = `mx-1 px-3 py-1 rounded ${i === currentPage ? "bg-blue-600 text-white" : "bg-gray-300 text-gray-700"}`;
+        btn.textContent = i;
+        btn.addEventListener("click", () => {
+          currentPage = i;
+          renderTable();
+          renderPagination();
+        });
+        pagination.appendChild(btn);
+      }
+    }
 
     function filterTable() {
       const city = document.getElementById("searchCity").value.toUpperCase();
@@ -102,6 +160,8 @@
 
       for (let i = 0; i < rows.length; i++) {
         const tds = rows[i].getElementsByTagName("td");
+        if (!tds.length) continue;
+
         const matchesCity = tds[0].textContent.toUpperCase().includes(city);
         const matchesCategory = tds[1].textContent.toUpperCase().includes(category);
         const matchesStore = tds[2].textContent.toUpperCase().includes(store);
@@ -110,34 +170,62 @@
       }
     }
 
-    function showVideoModal() {
-      const modal = document.getElementById("modal");
-      const content = document.getElementById("modalContent");
-      content.innerHTML = `
-        <div class="relative w-full" style="padding-bottom: 56.25%;">
-          <iframe class="absolute top-0 left-0 w-full h-full rounded-lg"
-            src="https://www.aparat.com/video/video/embed/videohash/blep93a/vt/frame"
-            allowfullscreen frameborder="0"></iframe>
-        </div>
-      `;
-      modal.classList.remove("hidden");
-      modal.classList.add("flex");
-    }
+    function showVideoModal() { openModal(`
+      <div class="relative w-full" style="padding-bottom: 56.25%;">
+        <iframe class="absolute top-0 left-0 w-full h-full rounded-lg"
+          src="https://www.aparat.com/video/video/embed/videohash/blep93a/vt/frame"
+          allowfullscreen frameborder="0"></iframe>
+      </div>
+    `);}
+    
+    function showBenefitsModal() { openModal(`
+      <div class="text-gray-700 space-y-4 leading-7 text-justify">
+        <h2 class="text-lg font-bold mb-2">مزایای کارت رفاهی برای دارندگان کارت:</h2>
+        <ul class="list-disc pr-6">
+          <li>افزایش قدرت خرید مشتریان</li>
+          <li>دریافت اعتبار خرید کالا بدون نیاز به ایجاد میانگین حساب</li>
+          <li>هزینه پایین تأمین مالی برای مشتریان</li>
+        </ul>
+        <h2 class="text-lg font-bold mt-6 mb-2">مزایای کارت رفاهی برای پذیرندگان:</h2>
+        <ul class="list-disc pr-6">
+          <li>افزایش ظرفیت اعتباری به منظور تأمین مالی</li>
+          <li>تضمین بازپرداخت اوراق گام توسط بانک و کاهش ریسک نکول</li>
+          <li>افزایش فروش و امکان فروش متقاطع</li>
+          <li>قابلیت انتقال اوراق در زنجیره تأمین</li>
+          <li>قابلیت تنزیل در صورت نیاز به منابع مالی</li>
+          <li>استفاده از اوراق گام در معاملات بورس کالا</li>
+          <li>انتقال به دستگاههای اجرایی بابت پرداخت بدهی به قیمت اسمی</li>
+        </ul>
+      </div>
+    `);}
 
-    function showMessageModal(message) {
+    function showMessageModal(message) { openModal(`<p class="text-gray-800 text-center text-lg py-6">${message}</p>`); }
+
+    function openModal(contentHtml) {
       const modal = document.getElementById("modal");
+      const modalBox = document.getElementById("modalBox");
       const content = document.getElementById("modalContent");
-      content.innerHTML = `<p class="text-gray-800 text-center text-lg py-6">${message}</p>`;
+
+      content.innerHTML = contentHtml;
       modal.classList.remove("hidden");
       modal.classList.add("flex");
+      modalBox.classList.add("fade-enter");
+      setTimeout(() => { modalBox.classList.add("fade-enter-active"); }, 10);
     }
 
     function closeModal() {
       const modal = document.getElementById("modal");
+      const modalBox = document.getElementById("modalBox");
       const content = document.getElementById("modalContent");
-      content.innerHTML = ""; // حذف iframe برای توقف کامل ویدیو
-      modal.classList.remove("flex");
-      modal.classList.add("hidden");
+
+      modalBox.classList.remove("fade-enter-active");
+      modalBox.classList.add("fade-exit-active");
+      setTimeout(() => {
+        modal.classList.remove("flex");
+        modal.classList.add("hidden");
+        modalBox.className = "bg-white rounded-lg shadow-lg max-w-2xl w-full p-4 relative";
+        content.innerHTML = "";
+      }, 300);
     }
   </script>
 
