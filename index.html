@@ -140,28 +140,31 @@
       });
 
     function renderTable() {
-      const tbody = document.getElementById("storeTable");
-      tbody.innerHTML = "";
+  const tbody = document.getElementById("storeTable");
+  tbody.innerHTML = "";
 
-      const start = (currentPage - 1) * rowsPerPage;
-      const paginatedRows = allRows.slice(start, start + rowsPerPage);
+  const start = (currentPage - 1) * rowsPerPage;
+  const paginatedRows = allRows.slice(start, start + rowsPerPage);
 
-      paginatedRows.forEach(row => {
-        const tr = document.createElement("tr");
-        tr.className = "hover:bg-gray-50";
-        tr.innerHTML = `
-          <td class="px-4 py-3">${row["شهر"]}</td>
-          <td class="px-4 py-3">${row["صنف"]}</td>
-          <td class="px-4 py-3">${row["نام فروشگاه"]}</td>
-          <td class="px-4 py-3">${row["آدرس"]}</td>
-          <td class="px-4 py-3"><a href="tel:${row["شماره تماس"]}" class="text-blue-600 hover:underline">${row["شماره تماس"]}</a></td>
-        `;
-        tbody.appendChild(tr);
-      });
+  paginatedRows.forEach(row => {
+    const tr = document.createElement("tr");
+    tr.className = "hover:bg-gray-50";
+    tr.innerHTML = `
+      <td class="px-4 py-3">${row["شهر"]}</td>
+      <td class="px-4 py-3">${row["صنف"]}</td>
+      <td class="px-4 py-3">${row["نام فروشگاه"]}</td>
+      <td class="px-4 py-3">${row["آدرس"]}</td>
+      <td class="px-4 py-3">
+        <a href="tel:${row["شماره تماس"].toString().padStart(11, '0')}" class="text-blue-600 hover:underline">
+          ${row["شماره تماس"].toString().padStart(11, '0')}
+        </a>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
 
-      filterTable();
-    }
-
+  filterTable();
+}
     function renderPagination() {
       const pagination = document.getElementById("pagination");
       pagination.innerHTML = "";
