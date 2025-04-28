@@ -139,7 +139,6 @@
           header: true,
           complete: function(results) {
             allRows = results.data.filter(row => row["شهر"]);
-            allRows.sort((a, b) => a["شهر"].localeCompare(b["شهر"], 'fa'));  // این خط رو اضافه کن
             renderTable();
             renderPagination();
           }
