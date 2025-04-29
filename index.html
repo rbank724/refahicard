@@ -230,10 +230,6 @@
                   row["نام فروشگاه"].toUpperCase().includes(store);
   const inProvince = row["استان"] === selectedProvince;
 
-  if (matches && !inProvince) {
-    alert(`فروشگاه مورد نظر شما در استان ${row["استان"]} می‌باشد.`);
-  }
-
   return matches && inProvince;
 });
   }
