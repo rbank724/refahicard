@@ -180,17 +180,17 @@
       const tr = document.createElement("tr");
       tr.className = "hover:bg-gray-50";
       tr.innerHTML = `
-        <td class="px-4 py-3">${row["استان"]}</td>
-        <td class="px-4 py-3">${row["شهر"]}</td>
-        <td class="px-4 py-3">${row["صنف"]}</td>
-        <td class="px-4 py-3">${row["نام فروشگاه"]}</td>
-        <td class="px-4 py-3">${row["آدرس"]}</td>
-        <td class="px-4 py-3">
-          <a href="tel:${row["شماره تماس"].toString().padStart(11, '0')}" class="text-blue-600 hover:underline">
-            ${row["شماره تماس"].toString().padStart(11, '0')}
-          </a>
-        </td>
-      `;
+       <td class="px-4 py-3">${row["استان"]}</td>
+       <td class="px-4 py-3">${row["شهر"]}</td>
+       <td class="px-4 py-3">${row["صنف"]}</td>
+       <td class="px-4 py-3">${row["نام فروشگاه"]}</td>
+       <td class="px-4 py-3">${row["آدرس"]}</td>
+       <td class="px-4 py-3">
+         <a href="tel:${row["شماره تماس"].toString().padStart(11, '0')}" class="text-blue-600 hover:underline">
+           ${row["شماره تماس"].toString().padStart(11, '0')}
+         </a>
+       </td>
+  `;
       tbody.appendChild(tr);
     });
   }
