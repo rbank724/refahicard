@@ -83,10 +83,19 @@
   </button>
 </div>
 
-  <!-- متن کارت رفاهی -->
-  <div class="subtitle text-center sm:text-center sm:max-w-3xl mx-auto overflow-wrap-break-word">
-    <p class="text-base font-regular text-black">فروشگاههای پذیرنده کارت رفاهی در استانهای بوشهر و فارس</p>
+  <!-- انتخاب استان -->
+<div class="flex justify-center mb-4">
+  <div class="flex space-x-4 rtl:space-x-reverse bg-white shadow-md rounded-full px-6 py-2">
+    <label class="flex items-center space-x-2 rtl:space-x-reverse cursor-pointer">
+      <input type="radio" name="province" value="بوشهر" onclick="filterByProvince(this.value)" class="form-radio text-indigo-600" checked>
+      <span class="text-sm font-bold text-gray-700">استان بوشهر</span>
+    </label>
+    <label class="flex items-center space-x-2 rtl:space-x-reverse cursor-pointer">
+      <input type="radio" name="province" value="فارس" onclick="filterByProvince(this.value)" class="form-radio text-indigo-600">
+      <span class="text-sm font-bold text-gray-700">استان فارس</span>
+    </label>
   </div>
+</div>
   
   <!-- باکس‌های جستجو -->
   <div class="max-w-6xl mx-auto mb-4 grid grid-cols-1 sm:grid-cols-3 gap-2">
@@ -103,6 +112,7 @@
     <table class="min-w-full table-auto text-center" style="table-layout: auto;">
       <thead class="bg-purple-800 text-white">
         <tr>
+          <th class="px-4 py-2">استان</th>
           <th class="px-4 py-2">شهر</th>
           <th class="px-6 py-2">صنف</th>
           <th class="px-7 py-2">فروشگاه</th>
@@ -140,15 +150,25 @@
       Papa.parse(csv, {
         header: true,
         complete: function(results) {
-          allRows = results.data.filter(row => row["شهر"]);
-          allRows.sort((a, b) => a["شهر"].localeCompare(b["شهر"], 'fa'));
+          allRows = results.data.filter(row => row["استان"]);
+          allRows.sort((a, b) => a["استان"].localeCompare(b["استان"], 'fa'));
           filteredRows = [...allRows]; // شروع با همه داده‌ها
           renderTable();
           renderPagination();
         }
       });
     });
-
+  let selectedProvince = "بوشهر"; // مقدار پیش‌فرض
+  function filterByProvince(province) {
+  selectedProvince = province;
+  document.getElementById("searchCity").value = "";
+  document.getElementById("searchStore").value = "";
+  document.getElementById("searchCategory").value = "";
+  filteredRows = allRows.filter(row => row["استان"] === province);
+  currentPage = 1;
+  renderTable();
+  renderPagination();
+}
   function renderTable() {
     const tbody = document.getElementById("storeTable");
     tbody.innerHTML = "";
@@ -160,6 +180,7 @@
       const tr = document.createElement("tr");
       tr.className = "hover:bg-gray-50";
       tr.innerHTML = `
+        <td class="px-4 py-3">${row["استان"]}</td>
         <td class="px-4 py-3">${row["شهر"]}</td>
         <td class="px-4 py-3">${row["صنف"]}</td>
         <td class="px-4 py-3">${row["نام فروشگاه"]}</td>
@@ -203,11 +224,18 @@
   if (!city && !store && !category) {
     filteredRows = [...allRows];
   } else {
-    filteredRows = allRows.filter(row =>
-      row["شهر"].toUpperCase().includes(city) &&
-      row["صنف"].toUpperCase().includes(category) &&
-      row["نام فروشگاه"].toUpperCase().includes(store)
-    );
+    filteredRows = allRows.filter(row => {
+  const matches = row["شهر"].toUpperCase().includes(city) &&
+                  row["صنف"].toUpperCase().includes(category) &&
+                  row["نام فروشگاه"].toUpperCase().includes(store);
+  const inProvince = row["استان"] === selectedProvince;
+
+  if (matches && !inProvince) {
+    alert(`فروشگاه مورد نظر شما در استان ${row["استان"]} می‌باشد.`);
+  }
+
+  return matches && inProvince;
+});
   }
 
   currentPage = 1; // بازنشانی به صفحه اول
