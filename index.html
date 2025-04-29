@@ -129,96 +129,102 @@
 
   <!-- اسکریپت -->
   <script>
-    let allRows = [];
-    let currentPage = 1;
-    const rowsPerPage = 5;
+  let allRows = [];
+  let filteredRows = [];
+  let currentPage = 1;
+  const rowsPerPage = 6;
 
-    fetch("data.csv")
-      .then(response => response.text())
-      .then(csv => {
-        Papa.parse(csv, {
-          header: true,
-          complete: function(results) {
-            allRows = results.data.filter(row => row["شهر"]);
-            allRows.sort((a, b) => a["شهر"].localeCompare(b["شهر"], 'fa'));
-            renderTable();
-            renderPagination();
-          }
-        });
-      });
-
-    function renderTable() {
-  const tbody = document.getElementById("storeTable");
-  tbody.innerHTML = "";
-
-  const start = (currentPage - 1) * rowsPerPage;
-  const paginatedRows = allRows.slice(start, start + rowsPerPage);
-
-  paginatedRows.forEach(row => {
-    const tr = document.createElement("tr");
-    tr.className = "hover:bg-gray-50";
-    tr.innerHTML = `
-      <td class="px-4 py-3">${row["شهر"]}</td>
-      <td class="px-4 py-3">${row["صنف"]}</td>
-      <td class="px-4 py-3">${row["نام فروشگاه"]}</td>
-      <td class="px-4 py-3">${row["آدرس"]}</td>
-      <td class="px-4 py-3">
-        <a href="tel:${row["شماره تماس"].toString().padStart(11, '0')}" class="text-blue-600 hover:underline">
-          ${row["شماره تماس"].toString().padStart(11, '0')}
-        </a>
-      </td>
-    `;
-    tbody.appendChild(tr);
-  });
-
-  filterTable();
-}
-    function renderPagination() {
-      const pagination = document.getElementById("pagination");
-      pagination.innerHTML = "";
-
-      const pageCount = Math.ceil(allRows.length / rowsPerPage);
-
-      for (let i = 1; i <= pageCount; i++) {
-        const btn = document.createElement("button");
-        btn.className = `mx-1 px-3 py-1 rounded ${i === currentPage ? "bg-blue-600 text-white" : "bg-gray-300 text-gray-700"}`;
-        btn.textContent = i;
-        btn.addEventListener("click", () => {
-          currentPage = i;
+  fetch("data.csv")
+    .then(response => response.text())
+    .then(csv => {
+      Papa.parse(csv, {
+        header: true,
+        complete: function(results) {
+          allRows = results.data.filter(row => row["شهر"]);
+          allRows.sort((a, b) => a["شهر"].localeCompare(b["شهر"], 'fa'));
+          filteredRows = [...allRows]; // شروع با همه داده‌ها
           renderTable();
           renderPagination();
-        });
-        pagination.appendChild(btn);
-      }
+        }
+      });
+    });
+
+  function renderTable() {
+    const tbody = document.getElementById("storeTable");
+    tbody.innerHTML = "";
+
+    const start = (currentPage - 1) * rowsPerPage;
+    const paginatedRows = filteredRows.slice(start, start + rowsPerPage);
+
+    paginatedRows.forEach(row => {
+      const tr = document.createElement("tr");
+      tr.className = "hover:bg-gray-50";
+      tr.innerHTML = `
+        <td class="px-4 py-3">${row["شهر"]}</td>
+        <td class="px-4 py-3">${row["صنف"]}</td>
+        <td class="px-4 py-3">${row["نام فروشگاه"]}</td>
+        <td class="px-4 py-3">${row["آدرس"]}</td>
+        <td class="px-4 py-3">
+          <a href="tel:${row["شماره تماس"].toString().padStart(11, '0')}" class="text-blue-600 hover:underline">
+            ${row["شماره تماس"].toString().padStart(11, '0')}
+          </a>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  function renderPagination() {
+    const pagination = document.getElementById("pagination");
+    pagination.innerHTML = "";
+
+    const pageCount = Math.ceil(filteredRows.length / rowsPerPage);
+    if (pageCount === 0) return;
+
+    for (let i = 1; i <= pageCount; i++) {
+      const btn = document.createElement("button");
+      btn.className = `mx-1 px-3 py-1 rounded ${i === currentPage ? "bg-blue-600 text-white" : "bg-gray-300 text-gray-700"}`;
+      btn.textContent = i;
+      btn.addEventListener("click", () => {
+        currentPage = i;
+        renderTable();
+        renderPagination();
+      });
+      pagination.appendChild(btn);
     }
+  }
 
-    function filterTable() {
-      const city = document.getElementById("searchCity").value.toUpperCase();
-      const store = document.getElementById("searchStore").value.toUpperCase();
-      const category = document.getElementById("searchCategory").value.toUpperCase();
-      const rows = document.getElementById("storeTable").getElementsByTagName("tr");
+  function filterTable() {
+  const city = document.getElementById("searchCity").value.trim().toUpperCase();
+  const store = document.getElementById("searchStore").value.trim().toUpperCase();
+  const category = document.getElementById("searchCategory").value.trim().toUpperCase();
 
-      for (let i = 0; i < rows.length; i++) {
-        const tds = rows[i].getElementsByTagName("td");
-        if (!tds.length) continue;
+  // اگر همه ورودی‌ها خالی بودند، فیلتر را پاک کن و همه داده‌ها را نمایش بده
+  if (!city && !store && !category) {
+    filteredRows = [...allRows];
+  } else {
+    filteredRows = allRows.filter(row =>
+      row["شهر"].toUpperCase().includes(city) &&
+      row["صنف"].toUpperCase().includes(category) &&
+      row["نام فروشگاه"].toUpperCase().includes(store)
+    );
+  }
 
-        const matchesCity = tds[0].textContent.toUpperCase().includes(city);
-        const matchesCategory = tds[1].textContent.toUpperCase().includes(category);
-        const matchesStore = tds[2].textContent.toUpperCase().includes(store);
+  currentPage = 1; // بازنشانی به صفحه اول
+  renderTable();
+  renderPagination();
+}
 
-        rows[i].style.display = (matchesCity && matchesStore && matchesCategory) ? "" : "none";
-      }
-    }
+  function showVideoModal() { openModal(`
+    <div class="relative w-full" style="padding-bottom: 56.25%;">
+      <iframe class="absolute top-0 left-0 w-full h-full rounded-lg"
+        src="https://www.aparat.com/video/video/embed/videohash/blep93a/vt/frame"
+        allowfullscreen frameborder="0"></iframe>
+    </div>
+  `);}
 
-    function showVideoModal() { openModal(`
-      <div class="relative w-full" style="padding-bottom: 56.25%;">
-        <iframe class="absolute top-0 left-0 w-full h-full rounded-lg"
-          src="https://www.aparat.com/video/video/embed/videohash/blep93a/vt/frame"
-          allowfullscreen frameborder="0"></iframe>
-      </div>
-    `);}
-    
-    function showBenefitsModal() { openModal(`
+  function showBenefitsModal() {
+    openModal(`
       <div class="text-gray-700 space-y-4 leading-7 text-justify">
         <h2 class="text-lg font-bold mb-2">مزایای کارت رفاهی برای مشتریان :</h2>
         <ul class="list-disc pr-6">
@@ -228,47 +234,25 @@
         </ul>
         <h2 class="text-lg font-bold mt-6 mb-2">مزایای کارت رفاهی برای پذیرندگان:</h2>
         <li>تمامی تولید کنندگان و فروشندگان کالاهای بادوام می‌توانند با انعقاد قرارداد با شعب بانک و پیوستن به شبکه فروشگاه‌های خدمت کارت رفاهی بانک رفاه کارگران از مزایایی همچون: امکان تبلیغات، معرفی و فروش اقساطی به جامعه گسترده مشتریان بانک رفاه، عدم نکول اقساط برای پذیرندگان و دریافت کل مبلغ فروش در قالب اوراق گام بهره‌مند شوند.</li>
-        <ul class="list-disc pr-6">
-          <li>افزایش ظرفیت اعتباری به منظور تأمین مالی</li>
-          <li>تضمین بازپرداخت اوراق گام توسط بانک و کاهش ریسک نکول</li>
-          <li>افزایش فروش و امکان فروش متقاطع</li>
-          <li>قابلیت انتقال اوراق در زنجیره تأمین</li>
-          <li>قابلیت تنزیل در صورت نیاز به منابع مالی</li>
-          <li>استفاده از اوراق گام در معاملات بورس کالا</li>
-          <li>انتقال به دستگاههای اجرایی بابت پرداخت بدهی به قیمت اسمی</li>
-        </ul>
       </div>
-    `);}
+    `);
+  }
 
-    function showMessageModal(message) { openModal(`<p class="text-gray-800 text-center text-lg py-6">${message}</p>`); }
+  function showMessageModal(message) {
+    openModal(`<div class="text-gray-700 text-center text-lg">${message}</div>`);
+  }
 
-    function openModal(contentHtml) {
-      const modal = document.getElementById("modal");
-      const modalBox = document.getElementById("modalBox");
-      const content = document.getElementById("modalContent");
+  function openModal(content) {
+    document.getElementById("modalContent").innerHTML = content;
+    document.getElementById("modal").classList.remove("hidden");
+    document.getElementById("modal").classList.add("flex");
+  }
 
-      content.innerHTML = contentHtml;
-      modal.classList.remove("hidden");
-      modal.classList.add("flex");
-      modalBox.classList.add("fade-enter");
-      setTimeout(() => { modalBox.classList.add("fade-enter-active"); }, 10);
-    }
-
-    function closeModal() {
-      const modal = document.getElementById("modal");
-      const modalBox = document.getElementById("modalBox");
-      const content = document.getElementById("modalContent");
-
-      modalBox.classList.remove("fade-enter-active");
-      modalBox.classList.add("fade-exit-active");
-      setTimeout(() => {
-        modal.classList.remove("flex");
-        modal.classList.add("hidden");
-        modalBox.className = "bg-white rounded-lg shadow-lg max-w-2xl w-full p-4 relative";
-        content.innerHTML = "";
-      }, 300);
-    }
-  </script>
+  function closeModal() {
+    document.getElementById("modal").classList.add("hidden");
+    document.getElementById("modal").classList.remove("flex");
+  }
+</script>
 
 </body>
 </html>
