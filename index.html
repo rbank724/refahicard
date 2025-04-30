@@ -202,19 +202,6 @@
   const pageCount = Math.ceil(filteredRows.length / rowsPerPage);
   if (pageCount === 0) return;
 
-  // دکمه پرش به صفحه اول اگر صفحه جاری بیشتر از 1 باشد
-  if (currentPage > 1) {
-    const firstBtn = document.createElement("button");
-    firstBtn.textContent = "صفحه اول";
-    firstBtn.className = "mx-1 px-3 py-1 rounded bg-gray-300 text-gray-700";
-    firstBtn.addEventListener("click", () => {
-      currentPage = 1;
-      renderTable();
-      renderPagination();
-    });
-    pagination.appendChild(firstBtn);
-  }
-
   // دکمه قبلی اگر صفحه جاری بزرگتر از 1 باشد
   if (currentPage > 1) {
     const prevBtn = document.createElement("button");
@@ -263,19 +250,6 @@
       renderPagination();
     });
     pagination.appendChild(nextBtn);
-  }
-
-  // دکمه پرش به صفحه آخر اگر صفحه جاری کوچکتر از تعداد کل صفحات باشد
-  if (currentPage < pageCount) {
-    const lastBtn = document.createElement("button");
-    lastBtn.textContent = "صفحه آخر";
-    lastBtn.className = "mx-1 px-3 py-1 rounded bg-gray-300 text-gray-700";
-    lastBtn.addEventListener("click", () => {
-      currentPage = pageCount;
-      renderTable();
-      renderPagination();
-    });
-    pagination.appendChild(lastBtn);
   }
 }
 
