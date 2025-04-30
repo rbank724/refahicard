@@ -196,24 +196,88 @@
   }
 
   function renderPagination() {
-    const pagination = document.getElementById("pagination");
-    pagination.innerHTML = "";
+  const pagination = document.getElementById("pagination");
+  pagination.innerHTML = "";
 
-    const pageCount = Math.ceil(filteredRows.length / rowsPerPage);
-    if (pageCount === 0) return;
+  const pageCount = Math.ceil(filteredRows.length / rowsPerPage);
+  if (pageCount === 0) return;
 
-    for (let i = 1; i <= pageCount; i++) {
-      const btn = document.createElement("button");
-      btn.className = `mx-1 px-3 py-1 rounded ${i === currentPage ? "bg-blue-600 text-white" : "bg-gray-300 text-gray-700"}`;
-      btn.textContent = i;
-      btn.addEventListener("click", () => {
-        currentPage = i;
-        renderTable();
-        renderPagination();
-      });
-      pagination.appendChild(btn);
-    }
+  // دکمه پرش به صفحه اول اگر صفحه جاری بیشتر از 1 باشد
+  if (currentPage > 1) {
+    const firstBtn = document.createElement("button");
+    firstBtn.textContent = "صفحه اول";
+    firstBtn.className = "mx-1 px-3 py-1 rounded bg-gray-300 text-gray-700";
+    firstBtn.addEventListener("click", () => {
+      currentPage = 1;
+      renderTable();
+      renderPagination();
+    });
+    pagination.appendChild(firstBtn);
   }
+
+  // دکمه قبلی اگر صفحه جاری بزرگتر از 1 باشد
+  if (currentPage > 1) {
+    const prevBtn = document.createElement("button");
+    prevBtn.textContent = "قبلی";
+    prevBtn.className = "mx-1 px-3 py-1 rounded bg-gray-300 text-gray-700";
+    prevBtn.addEventListener("click", () => {
+      currentPage--;
+      renderTable();
+      renderPagination();
+    });
+    pagination.appendChild(prevBtn);
+  }
+
+  // صفحه‌های اطراف صفحه جاری
+  let startPage = Math.max(1, currentPage - 2);
+  let endPage = Math.min(pageCount, currentPage + 2);
+
+  // اگر فاصله خیلی کم است، تعداد صفحات نمایش داده شده اصلاح می‌شود
+  if (currentPage <= 2) {
+    endPage = Math.min(5, pageCount);
+  } else if (currentPage >= pageCount - 1) {
+    startPage = Math.max(pageCount - 4, 1);
+  }
+
+  // دکمه‌های صفحات
+  for (let i = startPage; i <= endPage; i++) {
+    const btn = document.createElement("button");
+    btn.className = `mx-1 px-3 py-1 rounded ${i === currentPage ? "bg-blue-600 text-white" : "bg-gray-300 text-gray-700"}`;
+    btn.textContent = i;
+    btn.addEventListener("click", () => {
+      currentPage = i;
+      renderTable();
+      renderPagination();
+    });
+    pagination.appendChild(btn);
+  }
+
+  // دکمه بعدی اگر صفحه جاری کوچکتر از تعداد کل صفحات باشد
+  if (currentPage < pageCount) {
+    const nextBtn = document.createElement("button");
+    nextBtn.textContent = "بعدی";
+    nextBtn.className = "mx-1 px-3 py-1 rounded bg-gray-300 text-gray-700";
+    nextBtn.addEventListener("click", () => {
+      currentPage++;
+      renderTable();
+      renderPagination();
+    });
+    pagination.appendChild(nextBtn);
+  }
+
+  // دکمه پرش به صفحه آخر اگر صفحه جاری کوچکتر از تعداد کل صفحات باشد
+  if (currentPage < pageCount) {
+    const lastBtn = document.createElement("button");
+    lastBtn.textContent = "صفحه آخر";
+    lastBtn.className = "mx-1 px-3 py-1 rounded bg-gray-300 text-gray-700";
+    lastBtn.addEventListener("click", () => {
+      currentPage = pageCount;
+      renderTable();
+      renderPagination();
+    });
+    pagination.appendChild(lastBtn);
+  }
+}
 
   function filterTable() {
   const city = document.getElementById("searchCity").value.trim().toUpperCase();
