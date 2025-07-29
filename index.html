@@ -191,10 +191,19 @@
    <td class="px-4 py-3">${row["نام فروشگاه"]}</td>
    <td class="px-4 py-3">${row["آدرس"]}</td>
    <td class="px-4 py-3 text-center">
-     <a href="tel:${row["شماره تماس"].toString().padStart(11, '0')}" class="text-blue-600 hover:underline">
-       ${row["شماره تماس"].toString().padStart(11, '0')}
-     </a>
+    <a href="tel:${row["شماره تماس"].toString().padStart(11, '0')}" class="block mx-auto w-fit" title="تماس تلفنی">
+     <svg xmlns="http://www.w3.org/2000/svg" fill="url(#grad-phone)" viewBox="0 0 24 24" width="26" height="26">
+       <defs>
+        <linearGradient id="grad-phone" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#4f46e5;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#9333ea;stop-opacity:1" />
+        </linearGradient>
+       </defs>
+       <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.05-.24 11.36 11.36 0 003.56.57 1 1 0 011 1V20a1 1 0 01-1 1A16 16 0 014 5a1 1 0 011-1h3.25a1 1 0 011 1 11.36 11.36 0 00.57 3.56 1 1 0 01-.24 1.05z"/>
+     </svg>
+    </a>
    </td>
+
    <td class="px-4 py-3 text-center">
     <a href="sms:${row["شماره تماس"].toString().padStart(11, '0')}" class="block mx-auto w-fit" title="ارسال پیامک">
      <svg xmlns="http://www.w3.org/2000/svg" fill="url(#grad)" viewBox="0 0 24 24" width="26" height="26">
