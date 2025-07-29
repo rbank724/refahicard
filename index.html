@@ -156,7 +156,7 @@
         header: true,
         complete: function(results) {
           allRows = results.data.filter(row => row["استان"]);
-          allRows.sort((a, b) => a["استان"].localeCompare(b["استان"], 'fa'));
+          allRows.sort((a, b) => a["شهر"].localeCompare(b["شهر"], 'fa'));
           filteredRows = [...allRows]; // شروع با همه داده‌ها
           renderTable();
           renderPagination();
