@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>کارت رفاهی</title>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-M7SM10NFH6"></script>
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
@@ -154,20 +155,20 @@
   let currentPage = 1;
   const rowsPerPage = 6;
 
-  fetch("data.csv")
-    .then(response => response.text())
-    .then(csv => {
-      Papa.parse(csv, {
-        header: true,
-        complete: function(results) {
-          allRows = results.data.filter(row => row["استان"]);
-          allRows.sort((a, b) => a["شهر"].localeCompare(b["شهر"], 'fa'));
-          filteredRows = [...allRows]; // شروع با همه داده‌ها
-          renderTable();
-          renderPagination();
-        }
-      });
-    });
+  fetch("data.xlsx")
+  .then(response => response.arrayBuffer())
+  .then(arrayBuffer => {
+    const workbook = XLSX.read(arrayBuffer, { type: "array" });
+    const firstSheetName = workbook.SheetNames[0];
+    const worksheet = workbook.Sheets[firstSheetName];
+    const jsonData = XLSX.utils.sheet_to_json(worksheet, { defval: "" }); // defval => برای فیلدهای خالی
+    allRows = jsonData.filter(row => row["استان"]);
+    allRows.sort((a, b) => a["شهر"].localeCompare(b["شهر"], 'fa'));
+    filteredRows = [...allRows];
+    renderTable();
+    renderPagination();
+  });
+
   let selectedProvince = null;
   function filterByProvince(province) {
   selectedProvince = province;
