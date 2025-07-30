@@ -21,6 +21,12 @@
     .fancy-button { transition: all 0.3s ease; }
     .fancy-button:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 10px 15px rgba(0,0,0,0.15); }
   </style>
+  <style>
+    /* نمایش دکمه به‌طور پیش‌فرض */
+    a[href="tel:0218525"] {
+      display: block;
+    }
+  </style>
 </head>
 <body class="bg-gray-100 text-gray-800 px-4 py-6">
 
@@ -345,5 +351,21 @@
 <a href="tel:0218525" class="fixed bottom-4 right-4 z-50 w-22 h-22 flex items-center justify-center">
   <img src="images/farad.png" alt="تماس" class="w-16 h-16 rounded-full shadow-lg border-2 border-white" />
 </a>
+ <script>
+    window.onscroll = function() { toggleButtonVisibility() };
+
+    function toggleButtonVisibility() {
+      var button = document.querySelector('a[href="tel:0218525"]'); // انتخاب دکمه تماس
+      var scrollHeight = document.documentElement.scrollHeight;
+      var scrollPosition = window.innerHeight + window.scrollY;
+      
+      // بررسی اینکه آیا کاربر به انتهای صفحه رسیده است
+      if (scrollHeight - scrollPosition <= 1) {
+        button.style.display = 'none'; // مخفی کردن دکمه
+      } else {
+        button.style.display = 'block'; // نمایش دکمه
+      }
+    }
+  </script>
 </body>
 </html>
