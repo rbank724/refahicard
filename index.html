@@ -190,31 +190,15 @@
    <td class="px-4 py-3">${row["آدرس"]}</td>
    <td class="px-4 py-3 text-center">
     <a href="tel:${row["شماره تماس"].toString().padStart(11, '0')}" class="block mx-auto w-fit" title="تماس تلفنی">
-     <svg xmlns="http://www.w3.org/2000/svg" fill="url(#grad-phone)" viewBox="0 0 24 24" width="26" height="26">
-       <defs>
-        <linearGradient id="grad-phone" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" style="stop-color:#4f46e5;stop-opacity:1" />
-          <stop offset="100%" style="stop-color:#9333ea;stop-opacity:1" />
-        </linearGradient>
-       </defs>
-       <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.05-.24 11.36 11.36 0 003.56.57 1 1 0 011 1V20a1 1 0 01-1 1A16 16 0 014 5a1 1 0 011-1h3.25a1 1 0 011 1 11.36 11.36 0 00.57 3.56 1 1 0 01-.24 1.05z"/>
-     </svg>
+     <img src="images/phonecall.png" alt="تماس تلفنی" class="w-14 h-14 rounded-full shadow-lg border-2 border-white" />
     </a>
    </td>
 
    <td class="px-4 py-3 text-center">
     <a href="sms:${row["شماره تماس"].toString().padStart(11, '0')}" class="block mx-auto w-fit" title="ارسال پیامک">
-     <svg xmlns="http://www.w3.org/2000/svg" fill="url(#grad)" viewBox="0 0 24 24" width="26" height="26">
-       <defs>
-         <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
-           <stop offset="0%" style="stop-color:#4f46e5;stop-opacity:1" />
-           <stop offset="100%" style="stop-color:#9333ea;stop-opacity:1" />
-         </linearGradient>
-       </defs>
-       <path d="M2.01 6.5A2.5 2.5 0 0 1 4.5 4h15a2.5 2.5 0 0 1 2.49 2.5v11a2.5 2.5 0 0 1-2.49 2.5h-15a2.5 2.5 0 0 1-2.49-2.5v-11zM4.5 6a.5.5 0 0 0-.49.5v.59l8 5.06 8-5.06v-.59a.5.5 0 0 0-.49-.5h-15zm15 12a.5.5 0 0 0 .49-.5v-8.4l-7.51 4.75a1 1 0 0 1-1.02 0L4.5 9.1v8.4a.5.5 0 0 0 .49.5h15z"/>
-     </svg>
-   </a>
- </td>
+     <img src="images/sms.png" alt="ارسال پیامک" class="w-14 h-14 rounded-full shadow-lg border-2 border-white" />
+    </a>
+   </td>
 
  `;
 
