@@ -189,14 +189,14 @@
   const start = (currentPage - 1) * rowsPerPage;
   const paginatedRows = filteredRows.slice(start, start + rowsPerPage);
 
-  paginatedRows.forEach(row => {
+ paginatedRows.forEach(row => {
     const tr = document.createElement("tr");
     tr.className = "hover:bg-gray-50";
     tr.innerHTML = `
-   <td class="px-4 py-3">${row["شهر"]}</td>
-   <td class="px-4 py-3">${row["صنف"]}</td>
-   <td class="px-4 py-3">${row["نام فروشگاه"]}</td>
-   <td class="px-4 py-3">${row["آدرس"]}</td>
+   <td class="px-4 py-3">${convertToFarsi(row["شهر"])}</td>
+   <td class="px-4 py-3">${convertToFarsi(row["صنف"])}</td>
+   <td class="px-4 py-3">${convertToFarsi(row["نام فروشگاه"])}</td>
+   <td class="px-4 py-3">${convertToFarsi(row["آدرس"])}</td>
    <td class="px-4 py-3 text-center">
     <a href="tel:${row["شماره تماس"].toString().padStart(11, '0')}" class="block mx-auto w-fit" title="تماس تلفنی">
      <img src="images/phonecall.png" alt="call" class="w-14 h-14" />
@@ -208,11 +208,11 @@
      <img src="images/sms.png" alt="sms" class="w-14 h-14"/>
     </a>
    </td>
-
  `;
 
     tbody.appendChild(tr);
-  });
+});
+
 }
 
 
@@ -369,6 +369,16 @@
         button.style.display = 'block'; // نمایش دکمه
       }
     }
+  function convertToFarsi(number) {
+    const englishNumbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    const farsiNumbers = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+    
+    let numStr = number.toString();
+    for (let i = 0; i < 10; i++) {
+        numStr = numStr.replace(new RegExp(englishNumbers[i], 'g'), farsiNumbers[i]);
+    }
+    return numStr;
+  }
   </script>
 </body>
 </html>
